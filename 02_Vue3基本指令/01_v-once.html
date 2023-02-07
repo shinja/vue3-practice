@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CDN Vue Test</title>
+    </head>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <div id="app">
+        <div>
+            <counter v-model.number="count"></counter>
+            <h4 v-once>{{ count }}</h4>
+        </div>
+    </div>
+
+    <!-- template is a valid HTML tag, which will not renender in page.-->
+    <template id="counter">
+        <div>
+            <h2>{{ count }}</h2>
+            <button @click="add">+</button>
+            <button @click="sub">-</button>
+        </div>
+    </template>
+
+    <script>
+        const { createApp } = Vue;
+        const app = createApp({
+            data() {
+                return {
+                    message: "Hello Vue!",
+                    count: 5,
+                };
+            },
+        });
+
+        app.component("counter", {
+            template: "#counter",
+            props: {
+                modelValue: {
+                    type: [String, Number],
+                    default: 0,
+                },
+            },
+            emits: ["update:modelValue"],
+            computed: {
+                count: {
+                    get() {
+                        return this.modelValue;
+                    },
+                    set(val) {
+                        this.$emit("update:modelValue", val);
+                    },
+                },
+            },
+            methods: {
+                add() {
+                    this.count++;
+                },
+                sub() {
+                    this.count--;
+                },
+            },
+        });
+
+        app.mount("#app");
+    </script>
+</html>

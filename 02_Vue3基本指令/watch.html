@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CDN Vue Test</title>
+    </head>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <div id="app">
+        <div>
+            <div>name: {{ d.name }}</div>
+            <button @click="changeD">changeD</button>
+            <button @click="changeDName">changeDName</button>
+        </div>
+    </div>
+
+    <!-- template is a valid HTML tag, which will not renender in page.-->
+    <template id="counter">
+        <div></div>
+    </template>
+
+    <script>
+        const { createApp } = Vue;
+        const app = createApp({
+            data() {
+                return {
+                    d: {
+                        name: "old",
+                    },
+                };
+            },
+            methods: {
+                changeD() {
+                    this.d = { name: "new", age: 11 };
+                },
+                changeDName() {
+                    // 渲染上是都會觸發重新渲染的，因此畫面上都會更新
+                    this.d.name = "new";
+                },
+            },
+            watch: {
+                // d(nval, oval) {
+                //     // 只有 ChangeD 才能觸發這個watch，因為預設是 shallow watch.
+                //     console.log("object d changed", nval, oval);
+                // },
+                d: {
+                    handler(nval, oval) {
+                        console.log("object d changed (deep)", nval, oval);
+                    },
+                    // 有deep可以做深度監聽，ChangeDName才會觸發watch
+                    deep: true,
+                },
+            },
+        });
+
+        app.mount("#app");
+    </script>
+</html>

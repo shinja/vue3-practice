@@ -1,0 +1,31 @@
+<template>
+    <div>
+        {{ age }}
+        <button @click="changeAge">change age</button>
+    </div>
+</template>
+
+<script>
+import { computed, reactive, ref, shallowReactive, shallowRef, watch, watchEffect } from "vue";
+
+export default {
+    setup() {
+        const age = ref(0);
+
+        const changeAge = () => {
+            age.value++;
+        };
+
+        watch(
+            () => age.value,
+            (nval, oval) => {
+                console.log("watch callback", nval, oval);
+            }
+        );
+
+        return { age, changeAge };
+    },
+};
+</script>
+
+<style lang="scss" scoped></style>

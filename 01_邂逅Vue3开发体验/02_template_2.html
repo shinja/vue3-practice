@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>01 Vue CDN</title>
+    </head>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <div id="app"></div>
+
+    <!-- <template> will not render in HTML -->
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template -->
+    <template id="my-app">
+        <div>
+            <div>
+                <input v-model="message" type="text" />
+                <span>{{ message }}</span>
+            </div>
+            <div>
+                <counter v-model.number="count"></counter>
+                <h4>{{ count }}</h4>
+            </div>
+            <button @click="inc">++</button>
+            <button @click="dec">--</button>
+        </div>
+    </template>
+
+    <script>
+        const { createApp } = Vue;
+        const app = createApp({
+            template: "#my-app",
+            data() {
+                return {
+                    message: "Hello Vue!",
+                    count: 0,
+                };
+            },
+            methods: {
+                inc() {
+                    this.count++;
+                },
+                dec() {
+                    this.count--;
+                },
+            },
+        });
+
+        app.mount("#app");
+    </script>
+</html>
